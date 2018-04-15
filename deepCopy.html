@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>深度克隆</title>
+</head>
+
+<body>
+    <script>
+        console.log('1.循环遍历数组')
+        var arr = [1, 2, [3, [4, 5]]];
+        function deepCopy(a) {
+            var result = [];
+            a.forEach(element => {
+                if (typeof element === 'object' && element.constructor) {
+                    result.push(deepCopy(element));
+                } else {
+                    result.push(element);
+                }
+            });
+            return result;
+        }
+        var copyArr = deepCopy(arr);
+        copyArr[2][1] = ['a'];
+        console.log(arr, copyArr);
+
+        console.log('2.slice选定数组');
+        copyArr1 = arr.slice(0);
+        copyArr1.push('123');
+        console.log(arr, copyArr1);
+
+        console.log('3.concat连接数组');
+        copyArr2 = arr.concat();
+        copyArr2.push(0);
+        console.log(arr, copyArr2);
+
+        console.log('4.ES6语法深拷贝数组');
+        var [...copyArr3] = arr;
+        copyArr3[2] = 5;
+        console.log(arr, copyArr3);
+
+        console.log('5.循环遍历对象');
+        var obj = {
+            a: '1',
+            b: '2',
+            c: {
+                name: 'su',
+                others: {
+                    love: 'shu'
+                }
+            }
+        }
+        function deepCopyObj(o) {
+            var copyObj1 = {};
+            for (const key in o) {
+                if (o.hasOwnProperty(key)) {
+                    copyObj1[key] = typeof o[key] === 'object' ? deepCopyObj(o[key]) : o[key];
+                }
+            }
+            return copyObj1;
+        }
+        var resultObj = deepCopyObj(obj);
+        resultObj.c.others.love = 'sug';
+        console.log(obj, resultObj);
+
+        console.log('6.一行代码');
+        var copyObj2 = JSON.parse(JSON.stringify(obj));
+        copyObj2.c.others.hh = 'hh';
+        console.log(obj, copyObj2);
+        var copyArr4 = JSON.parse(JSON.stringify(arr));
+        copyArr4[2][2] = 'hh';
+        console.log(arr, copyArr4);
+
+        console.log('7.ES6语法深拷贝对象');
+        var {...copyObj3} = obj;
+        copyObj3.a = 5;
+        console.log(obj, copyObj3);
+
+        console.log('深度克隆复杂对象');
+    </script>
+</body>
+
+</html>

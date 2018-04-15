@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>创建对象模式+继承</title>
+</head>
+
+<body>
+    <script>
+        // 1.工厂模式
+        function createAnimal(name) {
+            var oAnimal = new Object();
+            oAnimal.name = name || 'Animal';
+            oAnimal.sleep = function () {
+                console.log(this.name + '正在睡觉');
+            }
+            return oAnimal;
+        }
+        console.log('1.工厂模式', '无法识别对象类型');
+        var createDog = createAnimal('dog');
+        createDog.sleep();
+
+        // 2.构造函数模式
+        function Animal(name) {
+            this.name = name || 'Animal';
+            this.sleep = function () {
+                console.log(this.name + '正在睡觉！');
+            }
+        }
+        console.log('2.构造函数模式', '没有显示地创建对象', '没有return直接赋值给this');
+        console.log('以这种方式定义的构造函数都在window对象下');
+        console.log('使用构造函数的主要问题是每次实例对象，都要重新定义方法');
+        var nCat = new Animal('Catt');
+        nCat.sleep();
+        console.log('实例对象nCat的constructor指向类函数Animal：', 'nCat.constructor === Animal - ', nCat.constructor === Animal);
+        console.log('类型判断：', 'nCat instanceof Animal -', nCat instanceof Animal, '，nCat instanceof Object -', nCat instanceof Object);
+
+        // 3.组合构造函数和原型模式
+        console.log('3.组合构造函数和原型模式：构造函数用于定义实例属性，而原型模式用于定义方法和共享的属性');
+
+        // 3.1组合模式
+        function Animal(name) {
+            this.name = name || 'Animal';
+            this.sleep = function () {
+                console.log(this.name + '正在睡觉！');
+            }
+        }
+        Animal.prototype.eat = function (food) {
+            console.log(this.name + '正在吃：' + food);
+        };
+
+        // 3.2动态原型组合模式
+        function Animal(name) {
+            this.name = name || 'Animal';
+            if (typeof this.sleep != 'object') {
+                Animal.sleep = function () {
+                    console.log(this.name + '正在睡觉！');
+                }
+            }
+        }
+        // 3.3寄生构造模式
+        // 3.4稳妥构造模式
+
+        /* 
+            *继承 
+            */
+        // 1.原型继承
+        // 缺点：原型属性相互影响；创建子类实例时不能向超类型构造函数传递参数
+        function SuperType() {
+            this.prototype = true;
+            this.colors = ['red','yellow']
+        }
+        SuperType.prototype.getSuperValue = function(){
+            return this.prototype;
+        }
+        function SubType(){
+            this.prototype = false;
+        }
+        SubType.prototype = new SuperType();
+        var instance1 = new SubType();
+        instance1.colors.push('blue');
+        console.log(instance1.colors);
+        var instance2 = new SubType();
+        console.log(instance2.colors);
+
+        // 2.借用构造函数（经典继承）
+        // 核心：通过调用父类构造，继承父类的属性不共享且可传参
+        function Cat(name) {
+            Animal.call(this, 'Tom');
+            this.age = 5;
+        }
+
+        // 3.！！！组合继承（伪经典继承）【最广】
+        // 核心：通过调用父类构造，继承父类的属性不共享并保留传参的优点，然后通过将父类实例作为子类原型，实现函数复用
+        // 缺点：调用了两次父类构造函数，生成了两份实例（子类实例将子类原型上的那份屏蔽了）
+        Cat.prototype = new Animal();   // 第一个调用
+        function Cat(name) {
+            Animal.call(this, 'Tom');   // 第二次调用
+            this.age = 5;
+        }
+
+        // 4.！！！！！寄生组合继承【最优】
+        // 核心：通过借用构造函数来继承属性，原型链的混成形式来继承方法；只调用了一次父类构造函数，并避免在父类原型上添加不必要的属性
+        function Cat(name,age) {
+            Animal.call(this,name);
+            this.age = age;
+        }
+        function inheritPrototype(SubType, SuperType){
+            var prototype = SuperType.prototype;    // 创建对象
+            prototype.constructor = SubType;    // 增强对象
+            SubType.prototype = prototype;    // 指定对象
+        }
+        inheritPrototype(Cat, Animal);
+    </script>
+</body>
+
+</html>

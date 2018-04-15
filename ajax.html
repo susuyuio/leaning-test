@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>原生ajax请求</title>
+</head>
+
+<body>
+    <script>
+        function createXHR() {
+            if (typeof XMLHttpRequest != 'undefined') {
+                return new XMLHttpRequest();
+            } else if (typeof arguments.callee.activeXString != 'string') {
+                // 兼容IE7以下版本
+                var versions = ['MSXML2.XMLHttp.6.0', 'MSXML2.XMLHttp.3.0', 'MSXML2.XMLHttp'],
+                    i, len;
+                for (i = 0, len = versions.length; i < len; i++) {
+                    try {
+                        new ActiveXObject(versions[I]);
+                        arguments.callee.activeXString = versions[I];
+                        break;
+                    } catch (ex) {
+                        //跳过
+                    }
+                }
+            } else {
+                throw new Error('No XHR object available');
+            }
+        }
+        var xhr = createXHR();
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState == 4) {
+                alert(xhr.responseText);
+            } else {
+                alert('Request was unsuccessful: ' + xhr.status);
+            }
+        }
+        xhr.open('get', 'https://www.example.php', true); //启动请求以备发送,参数分别为：'post'/'get', 请求url(可为相对地址), 是否异步
+        // xhr.abort(); 取消异步请求
+        xhr.setRequestHeader('myHeader', 'myValue'); // 设置请求头
+        // 超时设定，IE8+支持
+        xhr.timeout = 1000;
+        xhr.ontimeout = function () {
+            console.log('Request did not return in a second.');
+        }
+        //请求被派送到服务器
+        xhr.send(null);    //不需要通过请求主体发送的数据时参数为null
+        // 获取响应头信息
+        xhr.getResponseHeader('myHeader');
+        xhr.getAllResponseHeaders();
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>排序算法</title>
+</head>
+
+<body>
+    <script>
+        console.log('冒泡排序');
+        bubbleSort = (arr) => {
+            for (let i = 0; i < arr.length; i++) {
+                for (let j = i + 1; j < arr.length; j++) {
+                    if (arr[i] > arr[j]) {
+                        let temp = arr[i];
+                        arr[i] = arr[j];
+                        arr[j] = temp;
+                    }
+                }
+            }
+            return arr;
+        }
+        console.log('bubbleSort', bubbleSort([2, 4, 1, 4, 5, 72, 2]))
+
+
+        console.log('快速排序');
+        quickSort = (arr) => {
+            if (arr.length <= 1) { return arr; }
+            var pivotIndex = Math.floor(arr.length / 2);
+            var pivot = arr.splice(pivotIndex, 1)[0];
+            var left = [];
+            var right = [];
+            for (var i = 0; i < arr.length; i++) {
+                if (arr[i] < pivot) {
+                    left.push(arr[i]);
+                } else {
+                    right.push(arr[i]);
+                }
+            }
+            return quickSort(left).concat([pivot], quickSort(right));
+        };
+        console.log(quickSort([3,2,1,4,5]))
+
+
+        console.log('选择排序');
+        selectSort = (arr) => {
+            let minIndex, temp;
+            for (let i = 0; i < arr.length - 1; i++) {
+                minIndex = i;
+                for (let j = i + 1; j < arr.length; j++) {
+                    if (arr[j] < arr[minIndex]) {
+                        minIndex = j;
+                    }
+                }
+                temp = arr[i];
+                arr[i] = arr[minIndex];
+                arr[minIndex] = temp;
+            }
+            return arr;
+        }
+
+        console.log('回文字符串')
+        palinderome = (str) => {
+            let temp = str.replace(/[\W_]/g, '').toLowerCase()
+            return temp === temp.split('').reverse().join('')
+        }
+        console.log(palinderome('rAce _car'))
+
+        palinderome1 = (str) => {
+            let temp = str.replace(/[\W_]/g, '').toLowerCase()
+            for (let i = 0; i < temp.length / 2; i++) {
+                if (temp.indexOf(i) !== temp.indexOf(temp.length - 1 - i)) {
+                    return false
+                }
+            }
+            return true
+        }
+        console.log(palinderome('rAce _car1'));
+
+        palinderome2 = (str) => {
+            let temp = str.replace(/[\W_]/g, '').toLowerCase()
+            if (temp.length === 0) return true
+            if (temp[0] !== temp[temp.length - 1]) {
+                return false
+            } else {
+                palinderome2(temp.slice(1, temp.length - 1))
+            }
+        }
+        console.log(palinderome(''));
+
+
+        console.log('统计字符串中最多字母: ')
+        maxShow = (str) => {
+            str = str.replace(/\W/g, '')
+            let oTemp = {}, maxNum = 0, maxValue = ''
+            for (let i = 0; i < str.length; i++) {
+                if (!oTemp[str[i]]) {
+                    oTemp[str[i]] = 1
+                } else {
+                    oTemp[str[i]]++
+                }
+            }
+            for (key in oTemp) {
+                if (oTemp[key] > maxNum) {
+                    maxNum = oTemp[key]
+                    maxValue = key
+                }
+            }
+            return maxValue + ' - ' + maxNum
+        }
+        console.log(maxShow('asdjnnnaksdnka_1231[][[[,,\]'))
+
+
+        console.log('二分查找')
+        midSelect = (arr, val, start, end) => {
+            start = start || 0
+            end = end || arr.length - 1
+            let midValue = parseInt((start + end) / 2)
+            if (arr[midValue] === val) {
+                return midValue
+            } else if (arr[midValue] < val) {
+                start = midValue + 1
+                return midSelect(arr, val, start, end)
+            } else if (arr[midValue] > val) {
+                end = midValue - 1
+                return midSelect(arr, val, start, end)
+            }
+        }
+        console.log(midSelect([1, 2, 3, 4, 5, 6, 7], 5, 0))
+
+
+        console.log('利用闭包实现每调用一次返回值+1')
+        let add = (function () {
+            let num = 0
+            return function () {
+                return ++num
+            }
+        })()
+        console.log(add())
+        console.log(add())
+        console.log(add())
+    </script>
+
+
+
+
+
+
+    <script>
+
+    </script>
+</body>
+
+</html>
