@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>BOM</title>
+</head>
+
+<body>
+    <script>
+        document.write('BOM -- 浏览器对象模型<br>')
+        document.write('全局变量不能通过delete操作符删除，而直接在window对象上定义的属性可以。<br>')
+        document.write('1.跨浏览器取得窗口左边和上边的位置:')
+        var leftPos = typeof window.screenLeft === 'number' ? window.screenLeft : window.screenX;
+        var topPos = typeof window.screenTop === 'number' ? window.screenTop : window.screenY;
+        document.write(leftPos + ',' + topPos + '<br>');
+        document.write('2.跨浏览器取得窗口页面视口大小:')
+        var pageWidth = window.innerWidth;
+        var pageHeight = window.innerHeight;
+        if (typeof pageWidth !== 'number') {
+            if (document.compatMode === 'CSS1Compat') {
+                pageWidth = document.documentElement.clientWidth;
+                pageHeight = document.documentElement.clientHeight;
+            } else {
+                pageWidth = document.body.clientWidth;
+                pageHeight = document.body.clientHeight;
+            }
+        }
+        document.write(pageWidth + ',' + pageHeight + '<br>');
+    </script>
+</body>
+
+</html>
