@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>数组</title>
+</head>
+
+<body>
+    <script>
+        let numbers = [1, 2, 3, 4, 5];
+        // 是否是双数
+        let isEven = (number) => {
+            return number % 2 === 0;
+        }
+        document.write(numbers);
+        document.write('<br>every:', numbers.every(isEven));
+        document.write('<br>some:', numbers.some(isEven));
+        document.write('<br>filter:', numbers.filter(isEven));
+        document.write('<br>map:', numbers.map(isEven));
+        document.write('<br>reduce', numbers.reduce((prev, val, index) => {
+            return prev + val;
+        }));
+        document.write('<br><br>ES6数组新功能：');
+
+        document.write('<br>1.for...of循环迭代');
+        for (let v of numbers) {
+            console.log(v);
+        }
+        document.write('<br>2.iterator循环迭代');
+        let iter = numbers[Symbol.iterator]();
+        console.log('iterator', iter.next(), iter.next(), iter.next(), 'hhaa..', iter.next(), iter.next(), iter.next(), iter.next());
+
+        document.write('<br>3.数组遍历获取键值对/key/value');
+        let entrie = numbers.entries();
+        console.log('entries', entrie.next().value, entrie.next().value, entrie.next().value);
+        let key = numbers.keys();
+        console.log('keys', key.next(), key.next(), key.next());
+        let value = numbers.values();
+        console.log('values', value.next(), value.next(), value.next());
+
+        document.write('<br>4.Array.from()创建新数组复制或过滤');
+        console.log(Array.from(numbers));
+
+        document.write('<br>5.Array.of()创建新数组复制或新建，参数需展开（...展开操作符）');
+        console.log(Array.of(...[1,2,3,4]));
+
+        document.write('<br>6.fill()填充数组 [val,beginIdx,endIdx]');
+        console.log(numbers.fill(0,0,1));
+
+        document.write('<br>7.copyWithin()复制元素至当前数组 [valIdx,beginIdx(,endIdx)]');
+        console.log(numbers.copyWithin(0,4,5));
+
+        document.write('<br>8.find(cb),findIndex(cb)查找符合条件的第一个值和索引');
+
+        document.write('<br><br>ES7数组新功能：');
+        document.write('<br>1.includes((beginIdx,)val)查找是否存在该值');
+
+        document.write('<br><br>类型数组：只能存储单一类型的数组。');
+        
+        
+    </script>
+</body>
+
+</html>
