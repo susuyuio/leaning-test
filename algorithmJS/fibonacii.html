@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>斐波那契数列</title>
+</head>
+
+<body>
+    <script>
+        let fibonaciiFn = (len) => {
+            console.log('fibonaciiFn');
+            let aFibonacii = [1, 2];
+            if (len > 0 && len === 1) {
+                return [1];
+            } else if (len > 0) {
+                return [1, 2];
+            } else {
+                return 'param should bigger than number0.'
+            }
+            for (let i = 2; i < len; i++) {
+                aFibonacii.push(aFibonacii[i - 1] + aFibonacii[i - 2]);
+            }
+            return aFibonacii;
+        }
+        console.log(fibonaciiFn(0));
+    </script>
+</body>
+
+</html>
