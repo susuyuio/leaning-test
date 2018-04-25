@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>队列及其算法</title>
+</head>
+
+<body>
+    <script>
+        // 击鼓传花 - 算法
+        let hotPotato = (people, num) => {
+            while (people.length > 1) {
+                for (let i = 0; i < num; i++) {
+                    people.push(people.shift(people[i]));
+                }
+                let out = people.shift();
+                console.log(`${out}本轮出局`);
+            }
+            if (people.length === 1) {
+                console.log(`最终获胜：${people[0]}`);
+            }
+        }
+        hotPotato(['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J'], 7);
+    </script>
+</body>
+
+</html>

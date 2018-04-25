@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>栈及相关算法</title>
+</head>
+
+<body>
+    <script>
+        const shapeType = {
+            triangle: Symbol('triangle'),   // 规避属性值重复
+            circle: Symbol('circle')
+        };
+        function getArea(shape, options) {
+            let area = 0;
+            switch (shape) {
+                case shapeType.triangle:
+                    area = `triangle-area: ${.5 * options.width * options.height}`;
+                    break;
+                case shapeType.circle:
+                    area = `circle-area: ${Math.PI * options.width * options.width}`
+            }
+            return area;
+        }
+        console.log(getArea(shapeType.triangle, { width: 100, height: 100 }));
+        console.log(getArea(shapeType.circle, { width: 100 }));
+
+        // Reflect.ownKeys(obj)可获取Symbol属性
+        let my_key = Symbol();
+        let obj = {
+            [my_key]: 1,
+            enum: 2,
+            nonEnum: 3
+        };
+        console.log(Reflect.ownKeys(obj), obj[my_key]);
+
+        // 属性私有
+        let Stack1 = (function () {
+            const items = new WeakMap();
+            class Stack {
+                constructor() {
+                    items.set(this, []);
+                }
+            }
+            return Stack;
+        })();
+        console.log(Stack1);
+
+        // 算法 - 十进制转二进制
+        let divideBy2 = (decNumber) => {
+            if (decNumber === 0) return 0;
+            let result = [], num = decNumber;
+            while (num > 0) {
+                result.unshift(num % 2);
+                num = Math.floor(num / 2);
+            }
+            return result.join('');
+        }
+        console.log(divideBy2(16));
+
+        // 算法 - 十进制转换成任意进制数
+        let baseConverter = (decNumber, base) => {
+            if (decNumber === 0) return '0';
+            let result = [], num = decNumber, digits = '0123456789ABCDEF';
+            while (num > 0) {
+                result.unshift(digits[num % base]);
+                num = Math.floor(num / base);
+            }
+            return result.join('');
+        }
+        console.log(baseConverter(15, 16));
+    </script>
+</body>
+
+</html>
