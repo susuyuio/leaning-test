@@ -10,90 +10,156 @@
 
 <body>
     <script>
-        let Collection = (function () {
-            let items = {};
-            class Collection {
+        let Set2 = (function () {
+            const items = new WeakMap();
+            class Set2 {
+                constructor() {
+                    items.set(this, {});
+                }
                 has(key) {
-                    return items.hasOwnProperty(key);
+                    let _items = items.get(this);
+                    return _items.hasOwnProperty(key);
                 }
                 add(key) {
                     if (!this.has(key)) {
-                        items[key] = key;
+                        let _items = items.get(this);
+                        _items[key] = key;
                         return true;
                     }
                     return false;
                 }
                 remove(key) {
                     if (this.has(key)) {
-                        delete items[key];
+                        let _items = items.get(this);
+                        delete _items[key];
                         return true;
                     }
                     return false;
                 }
                 clear() {
-                    items = {};
-                    return true;
+                    items.set(this, {});
                 }
                 size() {
-                    let count = 0;
-                    for (let key in items) {
-                        if (items.hasOwnProperty(key)) {
-                            count++;
-                        }
-                    }
-                    return count;
+                    let _items = items.get(this);
+                    return Object.keys(_items).length;
                 }
                 values() {
                     let values = [];
-                    console.log(items);
-                    for (let key in items) {
-                        if (items.hasOwnProperty(key)) {
-                            values.push(items[key]);
-                        }
+                    let _items = items.get(this);
+                    for (let i = 0, keys = Object.keys(_items); i < keys.length; i++) {
+                        values.push(_items[keys[i]]);
                     }
                     return values;
                 }
-                union() {
+                getItems() {
+                    return items.get(this);
+                }
+                union(otherSet) {
                     // 并集
-                    let unionSet = new Collection();
-                    console.log(unionSet);
+                    let unionSet = new Set();
+                    let values = this.values();
+                    for (let i = 0; i < values.length; i++) {
+                        unionSet.add(values[i]);
+                    }
+                    values = otherSet.values();
+                    for (let i = 0; i < values.length; i++) {
+                        unionSet.add(values[i]);
+                    }
+                    return unionSet;
                 }
-                intersection() {
+                intersection(otherSet) {
                     // 交集
+                    let intersectionSet = new Set();
+                    let values = this.values();
+                    for (let i = 0; i < values.length; i++) {
+                        if (otherSet.has(values[i])) {
+                            intersectionSet.add(values[i]);
+                        }
+                    }
+                    return intersectionSet;
                 }
-                difference() {
+                difference(otherSet) {
                     // 差集
+                    let differenceSet = new Set();
+                    let values = this.values();
+                    for (let i = 0; i < values.length; i++) {
+                        if (!otherSet.has(values[i])) {
+                            differenceSet.add(values[i]);
+                        }
+                    }
+                    return differenceSet;
                 }
-                subset() {
+                subset(otherSet) {
                     // 子集
+                    if (this.size() > otherSet.size()) {
+                        return false;
+                    } else {
+                        let values = this.values();
+                        for (let i = 0; i < values.length; i++) {
+                            if (!otherSet.has(values[i])) {
+                                return false;
+                            }
+                        }
+                        return true;
+                    }
                 }
             }
-            return Collection;
+            return Set2;
         })();
-        let collection1 = new Collection();
-        console.log('has-1', collection1.has(1));
-        collection1.add(1);
-        collection1.add(2);
-        collection1.add(3);
-        console.log('has-1', collection1.has(1));
-        collection1.remove(1);
-        console.log('has-1', collection1.has(1));
-        console.log(collection1.size());
-        console.log(collection1.values());
-        collection1.clear();
-        console.log(collection1.size());
-        console.log(collection1.values());
-        collection1.add(1); collection1.add(2); collection1.add(3);
-        let collection2 = new Collection();
-        console.error('this need repeat thinking.');
-        // collection2.add(3); collection2.add(4); collection2.add(5); collection2.add(6);
-        console.log(collection2.values());
-        // collection1.union(collection2);
+
+        let collection = new Set2();
+        collection.add(1); collection.add(2); collection.add(3);
+        console.log('has-1', collection.has(1));
+        collection.remove(1);
+        console.log(collection.size());
+        console.log(collection.values());
+        collection.clear();
+        console.log(collection.size());
+        console.log(collection.values());
+        collection.add(1); collection.add(2); collection.add(3);
+        console.log('collection', collection.values());
+        let collection2 = new Set2();
+        collection2.add(3); collection2.add(4); collection2.add(5); collection2.add(6);
+        console.log('collection2', collection2.values());
+        console.log('union', collection.union(collection2));
+        console.log('intersection', collection.intersection(collection2));
+        console.log('difference', collection.difference(collection2));
+        console.log('subset', collection.subset(collection2));
 
         console.log('___________________ Set ___________________');
-        let s = new Set();
-        s.add('aa'); s.add('aa'); s.add('bb'); s.add('cc'); s.add(1); s.add(2); s.add(3);
-        console.log(s.values());
+        let s1 = new Set();
+        s1.add(1); s1.add(2); s1.add(3);
+        console.log(s1.values());
+        let s2 = new Set();
+        s2.add(2); s2.add(3); s2.add(4);
+        console.log(s2.values());
+
+        let union2 = new Set();
+        for (let x of s1) union2.add(x);
+        for (let x of s2) union2.add(x);
+        console.log('union2', union2);
+
+        let intersection2 = function (s1, s2) {
+            let intersectionSet = new Set();
+            for (let x of s1) {
+                if (s2.has(x)) {
+                    intersectionSet.add(x);
+                }
+            }
+            return intersectionSet;
+        }
+        console.log('intersection2', intersection2(s1, s2));
+
+        let difference2 = function (s1, s2) {
+            let differenceSet = new Set();
+            for (let x of s1) {
+                if (!s2.has(x)) {
+                    differenceSet.add(x);
+                }
+            }
+            return differenceSet;
+        }
+        console.log(difference2(s1, s2));
     </script>
 </body>
 
