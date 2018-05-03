@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>字典和散列表</title>
+</head>
+
+<body>
+    <script>
+        /*
+         * 散列表
+         */
+        function HashTable() {
+            var table = [];
+            // 散列函数（私有）
+            var loseloseHashCode = function (key) {
+                let hash = 0;
+                for (var i = 0; i < key.length; i++) {
+                    hash += key.charCodeAt(i);
+                }
+                return hash % 37; // 与任意数做除法，减小返回值
+            }
+            // 更好的，冲突少，性能高的 散列函数，其一方法
+            var djb2HashCode = function (key) {
+                var hash = 5381;
+                for (var i = 0; i < key.length; i++) {
+                    hash += hash * 33 + key.charCodeAt(i);
+                }
+                return hash % 1013;
+            }
+            this.put = function (key, value) {
+                table[loseloseHashCode(key)] = value;
+            }
+            this.remove = function (key) {
+                table[loseloseHashCode(key)] = undefined;
+            }
+            this.get = function (key) {
+                console.log(key, loseloseHashCode(key), table[loseloseHashCode(key)]);
+                return table[loseloseHashCode(key)];
+            }
+            this.print = function () {
+                for (var i = 0; i < table.length; i++) {
+                    if (table[i] !== undefined) {
+                        console.log(i + ': ' + table[i]);
+                    }
+                }
+            }
+        }
+        var hash = new HashTable();
+        hash.put('Gandalf', 'gandalf@email.com');
+        hash.put('John', 'johnsnow@email.com');
+        hash.put('Tyrion', 'tyrion@email.com');
+        hash.put('Aaron', 'aaron@email.com');
+        hash.put('Donnie', 'donnie@email.com');
+        hash.put('Ana', 'ana@email.com');
+        hash.put('Jonathan', 'jonathan@email.com');
+        hash.put('Jamie', 'jamie@email.com');
+        hash.put('Sue', 'sue@email.com');
+        hash.put('Mindy', 'mindy@email.com');
+        hash.put('Paul', 'paul@email.com');
+        hash.put('Nathan', 'nathan@email.com');
+        hash.put('AA', 'AA');
+        console.log('**** Printing Hash **** ');
+        hash.print();
+        console.log('**** Get **** ');
+        console.log(hash.get('Gandalf'));
+        console.log(hash.get('Loiane'));
+        console.log(hash.get('AA'));
+        console.log('**** Remove **** ');
+        hash.remove('Gandalf');
+        console.log(hash.get('Gandalf'));
+        hash.print();
+    </script>
+</body>
+
+</html>
