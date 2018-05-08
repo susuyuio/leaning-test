@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>树</title>
+</head>
+
+<body>
+    <script>
+        function BinarySearchTree() {
+            var Node = function (key) {
+                this.key = key;
+                this.left = null;
+                this.right = null;
+            };
+            var root = null;    // 根元素
+            function insertNode(node, newNode) {
+                if (newNode.key < node.key) {
+                    if (node.left === null) {
+                        node.left = newNode
+                    } else {
+                        arguments.callee(node.left, newNode);
+                    }
+                } else {
+                    if (node.right === null) {
+                        node.right = newNode
+                    } else {
+                        arguments.callee(node.right, newNode);
+                    }
+                }
+            };
+            function inOrderTraverseNode(node, cb) {
+                if (node !== null) {
+                    arguments.callee(node.left, cb);
+                    cb(node.key);
+                    arguments.callee(node.right, cb);
+                }
+            };
+            // 添加新键
+            this.insert = function (key) {
+                let newNode = new Node(key);
+                if (root === null) {
+                    root = newNode;
+                } else {
+                    insertNode(root, newNode);
+                }
+            }
+            // 查找键
+            this.search = function () {
+
+            }
+
+            // 中序遍历所有节点
+            this.inOrderTraverse = function (cb) {
+                inOrderTraverseNode(root, cb);
+            }
+            // 先序遍历所有节点
+            this.preOrderTraverse = function () {
+
+            }
+            // 后序遍历所有节点
+            this.postOrderTraverse = function () {
+
+            }
+            // 树中最小的键
+            this.min = function () {
+
+            }
+            // 树中最大的键
+            this.max = function () {
+
+            }
+            // 移除某个键
+            this.remove = function (key) {
+
+            }
+        }
+
+        var tree = new BinarySearchTree();
+        tree.insert(11); tree.insert(7); tree.insert(15); tree.insert(5);tree.insert(3);
+        // tree.insert(9);tree.insert(8);tree.insert(10);tree.insert(13);tree.insert(12);
+        // tree.insert(14);tree.insert(20);tree.insert(18);tree.insert(25);tree.insert(6);
+        function printNode(value) {
+            console.log(value);
+        }
+        tree.inOrderTraverse(printNode);
+    </script>
+</body>
+
+</html>
