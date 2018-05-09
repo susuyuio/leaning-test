@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>BFC</title>
+    <style>
+        .item1 {
+            width: 100px;
+            height: 100px;
+            background: #eee;
+            margin: 50px 0;
+        }
+        .overhidden {
+            overflow: hidden;
+        }
+        .borderwrap{
+            border: 1px solid #000;
+        }
+        .item2{
+            width: 100px;
+            height: 100px;
+            background: #eee;
+            float: left;
+        }
+        .main{
+            width: 100%;
+            height: 200px;
+            background: yellowgreen;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="item1"></div>
+    <!-- 解决 相邻块级元素垂直方向margin折叠 -->
+    <div class="overhidden">
+        <div class="item1"></div>
+    </div>
+    <!-- BFC可包含浮动元素 -->
+    <div class="borderwrap overhidden">
+        <div class="item2"></div>
+    </div>
+    <!-- BFC可阻止元素被浮动元素覆盖 -->
+    <div class="item2"></div>
+    <div class="main overhidden"></div>
+</body>
+
+</html>
