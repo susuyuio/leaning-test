@@ -17,6 +17,7 @@
                 this.right = null;
             };
             var root = null;    // 根元素
+
             function insertNode(node, newNode) {
                 if (newNode.key < node.key) {
                     if (node.left === null) {
@@ -32,6 +33,7 @@
                     }
                 }
             };
+
             function inOrderTraverseNode(node, cb) {
                 if (node !== null) {
                     arguments.callee(node.left, cb);
@@ -39,6 +41,80 @@
                     arguments.callee(node.right, cb);
                 }
             };
+
+            function preOrderTraverseNode(node, cb) {
+                if (node !== null) {
+                    cb(node.key);
+                    arguments.callee(node.left, cb);
+                    arguments.callee(node.right, cb);
+                }
+            };
+
+            function postOrderTraverseNode(node, cb) {
+                if (node !== null) {
+                    arguments.callee(node.left, cb);
+                    arguments.callee(node.right, cb);
+                    cb(node.key);
+                }
+            };
+
+            function minNode(node) {
+                if (node === null) return null;
+                while (node.left) {
+                    node = node.left;
+                }
+                return node;
+            }
+
+            function maxNode(node) {
+                if (node === null) return null;
+                while (node.right) {
+                    node = node.right;
+                }
+                return node;
+            }
+
+            function searchNode(node, key) {
+                if (node === null) {
+                    return false;
+                }
+                if (key < node.key) {
+                    return arguments.callee(node.left, key);
+                } else if (key > node.key) {
+                    return arguments.callee(node.right, key);
+                } else {
+                    return true;
+                }
+            }
+
+            function removeNode(node, key) {
+                if (node === null) {
+                    return null;
+                }
+                if (key < node.key) {
+                    node.left = removeNode(node.left, key);
+                    return node;
+                } else if (key > node.key) {
+                    node.right = removeNode(node.right, key);
+                    return node;
+                } else {
+                    if (node.right === null && node.left === null) {
+                        node = null;
+                        return node;
+                    } else if (node.right === null) {
+                        node = node.left;
+                        return node;
+                    } else if (node.left === null) {
+                        node = node.right;
+                        return node;
+                    }
+                    var temp = minNode(node.right);
+                    node.key = temp.key;
+                    node.right = removeNode(node.right, temp.key);
+                    return node;
+                }
+            }
+
             // 添加新键
             this.insert = function (key) {
                 let newNode = new Node(key);
@@ -48,44 +124,55 @@
                     insertNode(root, newNode);
                 }
             }
-            // 查找键
-            this.search = function () {
 
+            // 查找键
+            this.search = function (key) {
+                return searchNode(root, key);
             }
 
             // 中序遍历所有节点
             this.inOrderTraverse = function (cb) {
+                console.log('__________inOrderTraverse__________');
                 inOrderTraverseNode(root, cb);
             }
             // 先序遍历所有节点
-            this.preOrderTraverse = function () {
-
+            this.preOrderTraverse = function (cb) {
+                console.log('__________preOrderTraverse__________');
+                preOrderTraverseNode(root, cb);
             }
             // 后序遍历所有节点
-            this.postOrderTraverse = function () {
-
+            this.postOrderTraverse = function (cb) {
+                console.log('__________postOrderTraverse__________');
+                postOrderTraverseNode(root, cb);
             }
             // 树中最小的键
             this.min = function () {
-
+                return minNode(root);
             }
             // 树中最大的键
             this.max = function () {
-
+                return maxNode(root);
             }
             // 移除某个键
             this.remove = function (key) {
-
+                return removeNode(root, key);
             }
         }
 
         var tree = new BinarySearchTree();
-        tree.insert(11); tree.insert(7); tree.insert(15); tree.insert(5);tree.insert(3);
-        // tree.insert(9);tree.insert(8);tree.insert(10);tree.insert(13);tree.insert(12);
-        // tree.insert(14);tree.insert(20);tree.insert(18);tree.insert(25);tree.insert(6);
+        tree.insert(11); tree.insert(7); tree.insert(17); tree.insert(5);
+        tree.insert(3); tree.insert(15); tree.insert(16); tree.insert(18);
         function printNode(value) {
             console.log(value);
         }
+        tree.inOrderTraverse(printNode);
+        tree.preOrderTraverse(printNode);
+        tree.postOrderTraverse(printNode);
+        console.log('min: ', tree.min().key);
+        console.log('min: ', tree.max().key);
+        console.log(tree.search(1) ? '1 found' : '1 not found');
+        console.log(tree.search(3) ? '3 found' : '3 not found');
+        tree.remove(17);
         tree.inOrderTraverse(printNode);
     </script>
 </body>
