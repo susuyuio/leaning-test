@@ -8,6 +8,10 @@
         |--queue.html 队列相关算法
         |--README.md 算法目录
         |--stack.html 栈及其算法、Symbol
+    |--basis 基础知识
+        |-- BFC.html 
+        |-- deepCopy.html 克隆
+        |-- deepCopy.md 克隆总结文档
     |-- howNetWork 《网络是怎样连接的》
         |--web.md HTTP章节笔记
         └──images
