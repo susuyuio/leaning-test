@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>图</title>
+</head>
+
+<body>
+    <script>
+        // 字典
+        function Dictionary() {
+            var items = {};
+            this.has = function (k) {
+                return k in items;
+            }
+            this.set = function (k, val) {
+                items[k] = val;
+            }
+            this.get = function (k) {
+                return this.has(k) ? items[k] : undefined;
+            }
+        }
+        // 队列
+        function Queue() {
+            var items = [];
+            this.isEmpty = function () {
+                return items.length === 0;
+            }
+            this.enqueue = function (v) {
+                return items.push(v);
+            }
+            this.dequeue = function (v) {
+                return items.shift(v);
+            }
+        }
+        // 图
+        function Graph() {
+            // 所有顶点
+            var vertices = [];
+            // key: 顶点的名字，value: 邻接顶点列表
+            var adjList = new Dictionary();
+            // 添加顶点
+            this.addVertex = function (v) {
+                vertices.push(v);
+                adjList.set(v, []);
+            }
+            // 添加顶点的边
+            this.addEdge = function (v, w) {
+                adjList.get(v).push(w);
+                adjList.get(w).push(v);
+            }
+            this.toString = function () {
+                var s = '';
+                for (var i = 0; i < vertices.length; i++) {
+                    s += vertices[i] + ' -> ';
+                    var neighbors = adjList.get(vertices[i]);
+                    for (var j = 0; j < neighbors.length; j++) {
+                        s += neighbors[j] + ' ';
+                    }
+                    s += '\n';
+                }
+                return s;
+            };
+            // 初始化状态
+            var initialzeColor = function () {
+                var color = {};
+                for (var i = 0; i < vertices.length; i++) {
+                    color[vertices[i]] = 'white';
+                }
+                return color;
+            }
+            // 广度优先搜索
+            // 输出被访问顶点顺序
+            this.bfs = function (v, cb) {
+                var color = initialzeColor();
+                var queue = new Queue();
+                queue.enqueue(v);
+                color[v] = 'grey';
+                while (!queue.isEmpty()) {
+                    var u = queue.dequeue();
+                    var neighbors = adjList.get(u);
+                    for (var i = 0; i < neighbors.length; i++) {
+                        var w = neighbors[i];
+                        if (color[w] === 'white') {
+                            color[w] = 'grey';
+                            queue.enqueue(w);
+                        }
+                    }
+                    color[u] = 'black';
+                    if (cb) {
+                        cb(u)
+                    }
+                }
+            };
+            this.BFS = function (v) {
+                var color = initialzeColor(),
+                    queue = new Queue(),
+                    d = {},
+                    pred = {};
+                queue.enqueue(v);
+                color[v] = 'grey';
+                for (var i = 0; i < vertices.length; i++) {
+                    d[vertices[i]] = 0;
+                    pred[vertices[i]] = null;
+                }
+                while (!queue.isEmpty()) {
+                    var u = queue.dequeue(),
+                        neighbors = adjList.get(u);
+                    console.log(u);
+                    for (var i = 0; i < neighbors.length; i++) {
+                        var w = neighbors[i];
+                        if (color[w] === 'white') {
+                            color[w] = 'grey';
+                            d[w] = d[u] + 1;
+                            pred[w] = u;
+                            queue.enqueue(w);
+                        }
+                    }
+                    color[u] = 'black';
+                }
+                return {
+                    distances: d,
+                    predecessors: pred
+                }
+            }
+        }
+        var graph = new Graph();
+        var myVertices = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I'];
+        for (var i = 0; i < myVertices.length; i++) {
+            graph.addVertex(myVertices[i]);
+        }
+        graph.addEdge('A', 'B');
+        graph.addEdge('A', 'C');
+        graph.addEdge('A', 'D');
+        graph.addEdge('B', 'E');
+        graph.addEdge('B', 'F');
+        graph.addEdge('C', 'D');
+        graph.addEdge('C', 'G');
+        graph.addEdge('D', 'G');
+        graph.addEdge('D', 'H');
+        graph.addEdge('E', 'I');
+
+        console.log(graph.toString());
+
+        function printNode(value) {
+            console.log('Visited vertex: ' + value);
+        }
+        graph.bfs(myVertices[0], printNode);
+
+        var shortestPathA = graph.BFS(myVertices[0]);
+        console.log(shortestPathA);
+        var fromVertex = myVertices[0];
+        for (var i = 1; i < myVertices.length; i++) {
+            var toVertex = myVertices[i],
+                path = [];
+            for (var v = toVertex; v != fromVertex; v = shortestPathA.predecessors[v]) {
+                path.push(v);
+            }
+            path.push(fromVertex);
+            var s = path.pop();
+            while (path.length !== 0) {
+                s += ' - ' + path.pop();
+            }
+            console.log(s);
+        }
+    </script>
+</body>
+
+</html>
