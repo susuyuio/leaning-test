@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>克隆、深度克隆</title>
+</head>
+
+<body>
+    <script>
+        document.write('*********************** 浅克隆 *********************** <br/>');
+        console.log('*********************** 浅克隆 ***********************');
+
+        let arr = [1, 2, [3, [4, 5]], undefined];
+        let obj = {
+            'a': 'a',
+            'b': {
+                'b1': 'b'
+            },
+            'c'() {
+                return 'c';
+            },
+            'd': undefined,
+            'e': null,
+            'f': Symbol('haa')
+        }
+
+        document.write('1.数组 slice 返回数组中的某一节');
+        console.log('1.数组 slice 返回数组中的某一节');
+        let copyArr1 = arr.slice(0);
+        copyArr1[1] = ['b'];
+        // copyArr1[2][1] = ['b']; // 深度克隆失败
+        console.log(arr, copyArr1);
+
+        document.write('2.数组 concat 返回连接合并的新数组 <br/>');
+        console.log('2.数组 concat 返回连接合并的新数组');
+
+        let copyArr2 = arr.concat();
+        copyArr1[1] = ['c'];
+        // copyArr2[2][1] = 'c';   // 深度克隆失败
+        console.log(arr, copyArr2);
+
+        document.write('3.数组 ES6 Array.from 类数组对象转换数组 <br/>');
+        console.log('3.数组 ES6 Array.from 类数组对象转换数组');
+
+        let copyArr3 = Array.from(arr);
+        copyArr3[1] = ['d'];
+        // copyArr3[2][1] = ['d']; // 深度克隆失败
+        console.log(arr, copyArr3);
+
+        document.write('4.数组 对象 ES6 扩展运算符 <br/>');
+        console.log('4.数组 对象 ES6 扩展运算符');
+
+        let copyArr5 = [...arr];
+        copyArr5[1] = 'e';
+        // copyArr5[2][1] = ['e']; // 深度克隆失败
+        console.log(arr, copyArr5);
+        let copyObj1 = { ...obj };
+        copyObj1.a = '111';
+        // copyObj1.b.b1 = '111';    // 深度克隆失败
+        console.log(obj, copyObj1);
+
+        document.write('5.数组 对象 ES6 Object.assign 对象合并 <br/>')
+        console.log('5.数组 对象 ES6 Object.assign 对象合并')
+
+        let copyArr6 = Object.assign({}, arr);
+        copyArr6[1] = 'f';
+        // copyArr6[2][1] = 'f';   // 深度克隆失败
+        console.log(arr, copyArr6);
+        let copyObj2 = Object.assign({}, obj);
+        copyObj2.a = '222';
+        // copyObj2.b.b1 = '222';    // 深度克隆失败
+        console.log(obj, copyObj2);
+
+
+
+        document.write('*********************** 深度克隆 *********************** <br/>');
+        console.log('*********************** 深度克隆 ***********************');
+
+        arr = [1, 2, [3, 4, { b3: 5 }], undefined, null, { a: 1, b: { b1: 2 } }];
+        obj = {
+            'a': 'a',
+            'b': {
+                'b1': 'b'
+            },
+            'c'() {
+                return 'c';
+            },
+            'd': undefined,
+            'e': null,
+            'f': Symbol('haa'),
+            'g': [1, [2, 3], { g1: 4, g2: { g3: 5 } }]
+        }
+
+        document.write('1.数组 对象 JSON.parse(JSON.stringify()) <br/>');
+        console.log('1.数组 对象 JSON.parse(JSON.stringify())');
+        document.write('>>>>>数组中undefined转化为null，对象中undefined、function、symbol不能克隆<<<<< <br/>');
+        console.log('>>>>>数组中undefined转化为null，对象中undefined、function、symbol不能克隆<<<<<');
+
+        let copyArr7 = JSON.parse(JSON.stringify(arr));
+        copyArr7[1] = 'g';
+        copyArr7[2][1] = 'g';
+        console.log(arr, copyArr7);
+        let copyObj3 = JSON.parse(JSON.stringify(obj));
+        copyObj3.a = '333';
+        copyObj3.b.b1 = '333';
+        console.log(obj, copyObj3);
+
+        console.log('2.1递归 - 对象');
+
+        function deepCopyObj(o) {
+            let result = {};
+            for (let key in o) {
+                if (o[key] && typeof o[key] === 'object') {
+                    if (Array.isArray(o[key])) {
+                        result[key] = deepCopyArr(o[key]);
+                    } else if (o[key] && typeof o[key] === 'object') {
+                        result[key] = arguments.callee(o[key]);
+                    }
+                } else {
+                    result[key] = o[key];
+                }
+            }
+            return result;
+        }
+        let copyArr8 = deepCopyObj(arr);
+        copyArr8[1] = 'h';
+        copyArr8[2][1] = 'h';
+        console.log(arr, copyArr8);
+        let copyObj4 = deepCopyObj(obj);
+        console.log(copyObj4.c());
+        console.log(obj, copyObj4);
+
+        console.log('2.递归 - 数组');
+
+        function deepCopyArr(a) {
+            let result = [];
+            a.forEach(element => {
+                if (element && typeof element === 'object') {
+                    if (Array.isArray(element)) {
+                        result.push(deepCopyArr(element));
+                    } else {
+                        result.push(deepCopyObj(element));
+                    }
+                } else {
+                    result.push(element);
+                }
+            });
+            return result;
+        }
+        let copyArr9 = deepCopyArr(arr);
+        copyArr9[2][1] = 'i';
+        console.log(arr, copyArr9);
+
+        document.write('!!!!!!!!!!!!!!!!!!!!终极深度克隆!!!!!!!!!!!!!!!!!!!!');
+        console.log('!!!!!!!!!!!!!!!!!!!!终极深度克隆!!!!!!!!!!!!!!!!!!!!');
+        function deepCopy(deepItem) {
+            if (deepItem && typeof deepItem === 'object') {
+                if (Array.isArray(deepItem)) {
+                    return deepCopyArr(deepItem);
+                } else {
+                    return deepCopyObj(deepItem);
+                }
+            } else {
+                return deepItem;
+            }
+        }
+        let num = 1, str = '1', oNull = null, oUdf = undefined;
+        let dcNum = deepCopy(num), dcStr = deepCopy(str), dcNull = deepCopy(oNull),
+            dcUdf = deepCopy(oUdf), dcArr = deepCopy(arr), dcObj = deepCopy(obj);
+        dcNum = 2; dcStr = '2'; dcNull = 3; dcUdf = '4'; dcArr[2][1] = '5555'; dcObj.b.b1 = '666';
+        console.log(num, dcNum);
+        console.log(str, dcStr);
+        console.log(oNull, dcNull);
+        console.log(oUdf, dcUdf);
+        console.log(arr, dcArr);
+        console.log(obj, dcObj);
+    </script>
+</body>
+
+</html>
