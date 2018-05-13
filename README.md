@@ -7,7 +7,8 @@
         |--question.md 暂未解决问题
         |--queue.html 队列相关算法
         |--README.md 算法目录
-        |--stack.html 栈及其算法、Symbol
+        |--stack.html 栈 及其算法、Symbol
+        |--tree.html 树（二叉树BST、平衡树AVL）
     |-- howNetWork 《网络是怎样连接的》
         |--web.md HTTP章节笔记
         └──images

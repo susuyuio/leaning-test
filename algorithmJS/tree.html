@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>树</title>
+    <title>树（二叉树BST、平衡树AVL）</title>
 </head>
 
 <body>
@@ -115,6 +115,69 @@
                 }
             }
 
+            function insertNodeBlance(node, key) {
+                if (node === null) {
+                    node = new Node(key);
+                } else if (key < node.key) {
+                    node.left = arguments.callee(node.left, key);
+                    // 平衡
+                    if (node.left !== null) {
+                        if (heightNode(node.left) - heightNode(node.right) > 1) {
+                            if (key < node.left.key) {
+                                node = rotationLL(node);
+                            } else {
+                                node = rotationLR(node);
+                            }
+                        }
+                    }
+                } else if (key > node.key) {
+                    node.right = arguments.callee(node.right, key);
+                    // 平衡
+                    if (node.right !== null) {
+                        if (heightNode(node.right) - heightNode(node.left) > 1) {
+                            if (key > node.right.key) {
+                                node = rotationRR(node);
+                            } else {
+                                node = rotationRL(node);
+                            }
+                        }
+                    }
+                }
+            }
+
+            // 计算平衡因子
+            function heightNode(node) {
+                if (node === null) {
+                    return -1;
+                }
+                return Math.max(arguments.callee(node.left), arguments.callee(node.right) + 1);
+            }
+
+            // 向左单旋转
+            function rotationRR(node) {
+                let temp = node.right;
+                node.right = temp.left;
+                temp.left = node;
+                return temp;
+            }
+            // 向右单旋转
+            function rotationLL() {
+                let temp = node.left;
+                node.left = temp.right;
+                temp.right = node;
+                return node;
+            }
+            // 向左双旋转
+            function rotationRL() {
+                node.right = rotationLL(node.right);
+                return rotationRR(node);
+            }
+            // 向右双旋转
+            function rotationLR() {
+                node.left = rotationRR(node.left);
+                return rotationLL(node);
+            }
+
             // 添加新键
             this.insert = function (key) {
                 let newNode = new Node(key);
@@ -122,6 +185,16 @@
                     root = newNode;
                 } else {
                     insertNode(root, newNode);
+                }
+            }
+
+            // 平衡树添加
+            this.insertBlance = function (key) {
+                let newNode = new Node(key);
+                if (root === null) {
+                    root = newNode;
+                } else {
+                    insertNodeBlance(root, newNode);
                 }
             }
 
@@ -174,6 +247,16 @@
         console.log(tree.search(3) ? '3 found' : '3 not found');
         tree.remove(17);
         tree.inOrderTraverse(printNode);
+
+        console.log('*******AVLTree*******')
+        var treeBlc = new BinarySearchTree();
+        treeBlc.insertBlance(50);
+        treeBlc.insertBlance(30);
+        treeBlc.insertBlance(70);
+        treeBlc.insertBlance(60);
+        treeBlc.insertBlance(80);
+        treeBlc.insertBlance(90);
+        treeBlc.inOrderTraverse(printNode);
     </script>
 </body>
 
