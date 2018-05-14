@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>排序、搜索算法</title>
+</head>
+
+<body>
+    <script src="./sort.js"></script>
+    <script>
+        var testArr = new ArrayList();
+        testArr.insert(Math.floor(Math.random() * 10));
+        testArr.insert(Math.floor(Math.random() * 10));
+        testArr.insert(Math.floor(Math.random() * 10));
+        testArr.insert(Math.floor(Math.random() * 10));
+        testArr.insert(Math.floor(Math.random() * 10));
+        console.log(testArr.toString());
+        console.log('bubbleSort', testArr.bubbleSort());
+    </script>
+</body>
+
+</html>
