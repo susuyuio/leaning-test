@@ -72,6 +72,7 @@
                 }
                 return color;
             }
+
             // 广度优先搜索
             // 输出被访问顶点顺序
             this.bfs = function (v, cb) {
@@ -95,6 +96,7 @@
                     }
                 }
             };
+            // 路径
             this.BFS = function (v) {
                 var color = initialzeColor(),
                     queue = new Queue(),
@@ -125,6 +127,87 @@
                     distances: d,
                     predecessors: pred
                 }
+            };
+
+            var dfsVisit = function (u, color, cb) {
+                color[u] = 'grey';
+                if (cb) {
+                    cb(u);
+                }
+                var neighbors = adjList.get(u);
+                for (var j = 0; j < neighbors.length; j++) {
+                    var w = neighbors[j];
+                    if (color[w] === 'white') {
+                        arguments.callee(w, color, cb);
+                    }
+                }
+                color[u] = 'black';
+            }
+
+            // 深度优先搜索
+            // 输出顶点顺序
+            this.dfs = function (cb) {
+                var color = initialzeColor();
+                for (var i = 0; i < vertices.length; i++) {
+                    if (color[vertices[i]] === 'white') {
+                        dfsVisit(vertices[i], color, cb);
+                    }
+                }
+            }
+            // 探索发现事件和完成事件
+            var DFSVisit = function (u, color, d, f, p) {
+                color[u] = 'grey';
+                d[u] = ++time;
+                var neighbors = adjList.get(u);
+                for (var i = 0; i < neighbors.length; i++) {
+                    var w = neighbors[i];
+                    if (color[w] === 'white') {
+                        p[w] = u;
+                        arguments.callee(w, color, d, f, p);
+                    }
+                }
+                color[u] = 'black';
+                f[u] = ++time;
+            }
+            var time = 0;
+            this.DFS = function () {
+                var color = initialzeColor(),
+                    d = [],
+                    f = [],
+                    p = [];
+                for (var i = 0; i < vertices.length; i++) {
+                    d[vertices[i]] = 0;
+                    f[vertices[i]] = 0;
+                    p[vertices[i]] = null;
+                }
+                for (var i = 0; i < vertices.length; i++) {
+                    if (color[vertices[i]] === 'white') {
+                        DFSVisit(vertices[i], color, d, f, p);
+                    }
+                }
+                return {
+                    discovery: d,
+                    finished: f,
+                    predecessors: p
+                };
+            }
+
+            // 通过完成事件倒序排列，获得该图的拓扑排序
+            this.getTp = function (result) {
+                // 假设g为深度优先搜索后的结果
+                console.log(result.finished);
+                var f = [], r = [];
+                for (var v in result.finished) {
+                    f.push(result.finished[v]);
+                }
+                f.sort(function (a, b) { return b - a; });
+                f.forEach(element => {
+                    for (var v in result.finished) {
+                        if (element === result.finished[v])
+                            r.push(v);
+                    }
+                });
+                return r;
             }
         }
         var graph = new Graph();
@@ -151,7 +234,6 @@
         graph.bfs(myVertices[0], printNode);
 
         var shortestPathA = graph.BFS(myVertices[0]);
-        console.log(shortestPathA);
         var fromVertex = myVertices[0];
         for (var i = 1; i < myVertices.length; i++) {
             var toVertex = myVertices[i],
@@ -166,6 +248,11 @@
             }
             console.log(s);
         }
+
+        graph.dfs(printNode);
+        var result = graph.DFS();
+        console.log(result);
+        console.log(graph.getTp(result));
     </script>
 </body>
 
