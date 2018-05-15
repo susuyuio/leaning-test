@@ -36,6 +36,7 @@ function ArrayList() {
         }
         return arr;
     }
+    // 冒泡排序
     this.bubbleSort1_1 = function () {
         let len = arr.length;
         for (let i = 0; i < len; i++) {
@@ -51,6 +52,7 @@ function ArrayList() {
         }
         return arr;
     }
+    // 选择排序
     this.selectionSort = function () {
         let len = arr.length, indexMin;
         for (let i = 0; i < len; i++) {
@@ -71,6 +73,7 @@ function ArrayList() {
         }
         return arr;
     }
+    // 插入排序
     this.insertionSort = function () {
         let len = arr.length, j, temp;
         for (let i = 1; i < len; i++) {
@@ -83,6 +86,81 @@ function ArrayList() {
             }
             arr[j] = temp;
         }
+        return arr;
+    }
+    // 排序合并
+    let merge = function (left, right) {
+        let result = [], il = 0, ir = 0;
+        while (il < left.length && ir < right.length) {
+            if (left[il] < right[ir]) {
+                result.push(left[il++]);
+            } else {
+                result.push(right[ir++]);
+            }
+        }
+        while (il < left.length) {
+            result.push(left[il++]);
+        }
+        while (ir < right.length) {
+            result.push(right[ir++]);
+        }
+        return result;
+    }
+    // 分割数组
+    let mergeSortRec = function (arr) {
+        if (arr.length === 1) {
+            return arr;
+        }
+        let mid = Math.floor(arr.length / 2),
+            left = arr.slice(0, mid),
+            right = arr.slice(mid);
+        return merge(mergeSortRec(left), mergeSortRec(right));
+    }
+    // 归并排序
+    this.mergeSort = function () {
+        return mergeSortRec(arr);
+    }
+    // 划分过程
+    let parition = function (arr, left, right) {
+        let i = left, j = right,
+            pivot = arr[Math.floor((left + right) / 2)];
+        while (i <= j) {
+            while (arr[i] < pivot) {
+                i++;
+            }
+            while (arr[j] > pivot) {
+                j--;
+            }
+            console.log('i', i, 'j', j);
+            if (i <= j) {
+                let temp = arr[i];
+                arr[i] = arr[j];
+                arr[j] = temp;
+                i++;
+                j--;
+            }
+            console.log(arr);
+        }
+        return i;
+    }
+    // 快排递归
+    let quick = function (arr, left, right) {
+        let index;
+        if (arr.length > 0) {
+            index = parition(arr, left, right);
+            if (left < index - 1) {
+                console.log('1-1', arr, left, index - 1);
+                quick(arr, left, index - 1)
+            }
+            if (index < right) {
+                console.log('1-2', arr, index, right);
+                quick(arr, index, right);
+            }
+        }
+    }
+    // 快速排序
+    this.quickSort = function () {
+        quick(arr, 0, arr.length - 1);
         return arr;
     }
 }
