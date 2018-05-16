@@ -27,3 +27,7 @@
         |--function.html 函数表达式（递归、闭包）
         |--inherit.html 创建对象模式 + 继承
     
+# 待解决问题
+
+- crossDomain
+- GC
