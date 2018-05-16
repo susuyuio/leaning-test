@@ -29,5 +29,4 @@
     
 # 待解决问题
 
-- crossDomain
 - GC
