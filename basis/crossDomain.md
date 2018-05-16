@@ -1,5 +1,14 @@
 # 跨域
-- jsonp
+- jsonp（仅能实现get请求）
+```
+<script>
+    var script = document.createElement('script');
+    script.type='text/javascript';
+    script.src='http://xxx?callback=cb';
+    document.head.appendChild(script);
+    function cb(res){console.log(res);}
+</script>
+```
 - iframe + document.domain
 - iframe + location.hash
 - iframe + window.name
