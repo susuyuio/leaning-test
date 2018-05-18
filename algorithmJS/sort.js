@@ -88,7 +88,7 @@ function ArrayList() {
         }
         return arr;
     }
-    // 排序合并
+    // 归并排序 - 排序合并
     let merge = function (left, right) {
         let result = [], il = 0, ir = 0;
         while (il < left.length && ir < right.length) {
@@ -106,7 +106,7 @@ function ArrayList() {
         }
         return result;
     }
-    // 分割数组
+    // 归并排序 - 分割数组
     let mergeSortRec = function (arr) {
         if (arr.length === 1) {
             return arr;
@@ -120,7 +120,7 @@ function ArrayList() {
     this.mergeSort = function () {
         return mergeSortRec(arr);
     }
-    // 划分过程
+    // 快速排序 - 划分过程
     let parition = function (arr, left, right) {
         let i = left, j = right,
             pivot = arr[Math.floor((left + right) / 2)];
@@ -143,7 +143,7 @@ function ArrayList() {
         }
         return i;
     }
-    // 快排递归
+    // 快速排序 - 快排递归
     let quick = function (arr, left, right) {
         let index;
         if (arr.length > 0) {
