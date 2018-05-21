@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>call,apply,bind</title>
+</head>
+
+<body>
+    <script>
+        Function.prototype.myBind = function (context) {
+            var self = this;
+                console.log('11',self,context);
+            return function () {
+                console.log('22',self,context);
+                self.call(context);
+            };
+        }
+        var name = 'Global';
+        var student = {
+            name: 'Student'
+        };
+        var person = {
+            name: 'Person',
+            getName: function () {
+                return this.name;
+            }
+        };
+        console.log(person.getName());      // Person  
+        var getName = person.getName;
+        console.log(getName());             // Global  
+        console.log(getName.call(student)); // Student  
+
+        var gN = person.getName.myBind(student);  //使用bind函数绑定student对象  
+        console.log(gN());       //Student  
+    </script>
+</body>
+
+</html>
