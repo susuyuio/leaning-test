@@ -163,4 +163,22 @@ function ArrayList() {
         quick(arr, 0, arr.length - 1);
         return arr;
     }
+
+    // 二分查找
+    this.select = function (val, sortArr, left, right) {
+        sortArr = sortArr ? sortArr : arr.sort(function (a, b) { return a - b });
+        left = left ? left : 0;
+        right = right ? right : sortArr.length - 1;
+        let mid = Math.floor((left + right) / 2);
+        if (val === sortArr[mid]) {
+            return mid;
+        } else if (val < sortArr[mid]) {
+            return this.select(val, sortArr, 0, mid - 1);
+        } else if (val > sortArr[mid]) {
+            return this.select(val, sortArr, mid + 1, arr.length - 1);
+        } else {
+            return -1;
+        }
+
+    }
 }

@@ -11,10 +11,13 @@
         |--stack.html 栈 及其算法、Symbol
         |--tree.html 树（二叉树BST、平衡树AVL）
     |--basis 基础知识
-        |-- BFC.html 
+        |-- addLi.html 事件绑定、委托
+        |-- ajax.html
+        |-- BFC.html
         |-- crossDomain.md 跨域
         |-- deepCopy.html 克隆
         |-- deepCopy.md 克隆总结文档
+        |-- delReoeatArr.html 数组去重
         |-- HTTPCache.md HTTP缓存
         |-- webSecurity.md web安全
     |-- howNetWork 《网络是怎样连接的》
