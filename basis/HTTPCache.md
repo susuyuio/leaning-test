@@ -10,8 +10,8 @@
 Cache-Control
     public: 客户端和代理服务器均可缓存所有内容
     private: 仅客户端缓存所有内容
-    no-cahce: 客户端缓存，协商缓存验证决定
-    no-store: 不使用强缓存和协商缓存
+    no-cahce: 强制使用协商缓存
+    no-store: 不缓存
     max-age=xxx: 缓存内容在xxx秒后失效
 
 Expires

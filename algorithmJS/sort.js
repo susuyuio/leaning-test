@@ -54,7 +54,8 @@ function ArrayList() {
     }
     // 选择排序
     this.selectionSort = function () {
-        let len = arr.length, indexMin;
+        let len = arr.length,
+            indexMin;
         for (let i = 0; i < len; i++) {
             indexMin = i;
             // 找到最小值
@@ -75,7 +76,8 @@ function ArrayList() {
     }
     // 插入排序
     this.insertionSort = function () {
-        let len = arr.length, j, temp;
+        let len = arr.length,
+            j, temp;
         for (let i = 1; i < len; i++) {
             j = i;
             temp = arr[i];
@@ -90,7 +92,9 @@ function ArrayList() {
     }
     // 归并排序 - 排序合并
     let merge = function (left, right) {
-        let result = [], il = 0, ir = 0;
+        let result = [],
+            il = 0,
+            ir = 0;
         while (il < left.length && ir < right.length) {
             if (left[il] < right[ir]) {
                 result.push(left[il++]);
@@ -122,7 +126,8 @@ function ArrayList() {
     }
     // 快速排序 - 划分过程
     let parition = function (arr, left, right) {
-        let i = left, j = right,
+        let i = left,
+            j = right,
             pivot = arr[Math.floor((left + right) / 2)];
         while (i <= j) {
             while (arr[i] < pivot) {
@@ -166,7 +171,9 @@ function ArrayList() {
 
     // 二分查找
     this.select = function (val, sortArr, left, right) {
-        sortArr = sortArr ? sortArr : arr.sort(function (a, b) { return a - b });
+        sortArr = sortArr ? sortArr : arr.sort(function (a, b) {
+            return a - b
+        });
         left = left ? left : 0;
         right = right ? right : sortArr.length - 1;
         let mid = Math.floor((left + right) / 2);
@@ -179,6 +186,5 @@ function ArrayList() {
         } else {
             return -1;
         }
-
     }
 }

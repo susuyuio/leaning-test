@@ -9,13 +9,13 @@
 <body>
     <script>
         function myTrim(str){
-            return str.replace(/^\s*(.*?)\s*$/,'$1');
+            return str.replace(/^\s*|\s*$/g,'');
         }
-        console.log(myTrim('  s tr'));
-        console.log(myTrim('  s tr  '));
-        console.log(myTrim('s tr  '));
-        console.log(myTrim(''));
-        console.log(myTrim('  '));
+        console.log(myTrim('  s tr')==='s tr');
+        console.log(myTrim('  s tr  ')==='s tr');
+        console.log(myTrim('s tr  ')==='s tr');
+        console.log(myTrim('')==='');
+        console.log(myTrim('  ')==='');
     </script>
 </body>
 </html>
