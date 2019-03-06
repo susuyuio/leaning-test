@@ -110,4 +110,50 @@
         - immutability-helper
         - immer
 
-### `11. `
+### `11. React Router`
+- 三种实现方式
+    - URL路径
+    - hash路由
+    - 内存路由<Memory-Router>
+- API
+    - <Link> 普通链接 不触发浏览器刷新
+    - <NavLink> 在Link基础上添加选中class
+    - <Prompt> 满足条件时提示用户是否离开当前页
+    - <Redirect> 重定向，例如登录判断
+    - <Route> 路径匹配时显示对应组件
+        - exact 精确匹配
+        - 不排他，都满足条件均显示
+        - prefetch 预加载
+        - replace 替换页面
+    - <Switch> 只显示第一个匹配的路由
+- 参数
+    - 传参 path = "/topic/:id"
+    - 获取 this.props.match.params
+
+### `12. UI组件库`
+- Ant.Design 蚂蚁金服
+- Material UI 谷歌
+- Semantic UI
+
+### `13. 使用Next.js创建同构应用`
+- 服务器端渲染
+- getInitialProps 
+- LazyLoad => dynamic(import('../component')
+
+### `14. 使用Jest、Enzyme等工具进行单元测试`
+- 涉及工具
+    - Jest: Facebook开源JS单元测试框架
+    - JS DOM: 浏览器环境的NodeJS模拟
+    - Enzyme: React组件渲染和测试
+    - nock: 模拟HTTP请求
+    - sinon: 函数模拟和调用跟踪
+    - istanbul: 单元测试覆盖率
+
+### `15. 常用开发调试工具`
+- ESLint 语法风格检查
+- Prettier 格式化代码工具
+- React DevTool
+- Redux DevTool
+
+### `16. Rekit`
+- 工具集和IDE
